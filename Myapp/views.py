@@ -19,7 +19,6 @@ class VoteCreateView(APIView):
         # Check if the IP has already voted
         if Vote.objects.filter(ip_address=ip_address).exists():
             return Response({"error": "You alredy voted on this poll."}, status=status.HTTP_403_FORBIDDEN)
-
         try:
             candidate = Candidate.objects.get(id=candidate_id)
         except Candidate.DoesNotExist:
@@ -50,19 +49,17 @@ import random
 
 def submit_vote(request):
 
-#     candidate_ids = 3
+    # candidate_ids = 7
+    # candidate = Candidate.objects.get(id=candidate_ids)
+    # num_votes = 10  # Randomize number of votes between 30 and 50
+    # for _ in range(num_votes):
+    #     Vote.objects.create(
+    #         candidate=candidate,
+    #         ip_address=f"192.168.1.{random.randint(1, 255)}"  # Random dummy IPs
+    #     )
+    # print("Dummy votes added for candidates 3, 4, and 5!")
 
-# # Generate 30+ random votes for each candidate
-    
-#     candidate = Candidate.objects.get(id=candidate_ids)
-#     num_votes = 570  # Randomize number of votes between 30 and 50
-#     for _ in range(num_votes):
-#         Vote.objects.create(
-#             candidate=candidate,
-#             ip_address=f"192.168.1.{random.randint(1, 255)}"  # Random dummy IPs
-#         )
-#     print("Dummy votes added for candidates 3, 4, and 5!")
-
+    # Candidate.objects.get(id=6).delete()
 
     ip_address = get_client_ip(request)
     # Check if the IP has already voted
@@ -95,7 +92,12 @@ def get_client_ip(request):
 
 def vote_result(request):
     ip_address = get_client_ip(request)
-    msg = "You already voted on this poll."
+
+    if Vote.objects.filter(ip_address=ip_address).exists():
+        msg = "You already voted on this poll."
+    else:
+        msg = None
+
 
     # Fetch vote results
     candidates = Candidate.objects.all()

@@ -62,6 +62,17 @@
             border-radius: 8px;
             font-size: 1.1rem;
         }
+        /* Increase the font size of the radio button */
+        input[type="radio"].radio {
+            transform: scale(1.5); /* Scale up the radio button */
+            margin-right: 10px; /* Space between the radio button and label */
+        }
+
+        /* Optional: Increase font size of the label text */
+        input[type="radio"].radio + label {
+            font-size: 1.2rem; /* Increase font size of the label */
+        }
+
     </style>
 </head>
 <body>
@@ -81,19 +92,59 @@
                         <h5>{{ candidate.name }}</h5>
                     </div>
                     <div>
-                        <input type="radio" name="candidate" value="{{ candidate.id }}" id="candidate{{ candidate.id }}" class="form-check-input" style="display: none;">
+                        <input type="radio" class="radio" name="candidate" value="{{ candidate.id }}" id="candidate{{ candidate.id }}" class="form-check-input" >
                         <label for="candidate{{ candidate.id }}" class="form-check-label"></label>
                     </div>
                 </div>
                 {% endfor %}
-            </div>
-            <button type="submit" class="btn btn-primary submit-btn">Submit Your Vote</button>
+            </div> 
+            <button type="submit" id="submitVoteBtn" class="btn btn-primary submit-btn">Submit Your Vote</button>
+            <button type="button" id="loadingBtn" class="btn btn-primary submit-btn" style="display: none;" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Voting...
+            </button>
+
         </form>
     </div>
+
+    
+    <div class="text-center mt-4">
+        <button id="shareBtn" class="btn btn-success"> <img src="{% static 'what-app.webp' %}" alt="" style="width: 80px;"> Share on WhatsApp</button>
+    </div>
+
+    <script>
+    document.getElementById('shareBtn').addEventListener('click', function() {
+        const resultUrl = window.location.href; // Get the current URL (i.e., the result page URL)
+        const whatsappShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent("Check out the latest vote results: " + resultUrl)}`;
+        
+        // Open WhatsApp share link in a new window
+        window.open(whatsappShareUrl, '_blank');
+    });
+    </script>
+
+
     <footer class="text-center mt-4 py-3" style="background-color: #f8f9fa; font-size: 0.9rem; color: #555;">
         © 2024 112 वैजापूर विधानसभा मतदार संघ. All rights reserved.
     </footer>
 
+    <script>
+        document.getElementById('submitVoteBtn').addEventListener('click', function(event) {
+            // Prevent form submission to allow the loading button to be shown
+            event.preventDefault();
+
+            // Hide the Submit button and show the loading button
+            document.getElementById('submitVoteBtn').style.display = 'none';
+            document.getElementById('loadingBtn').style.display = 'inline-block';
+
+            // Simulate an asynchronous operation (e.g., sending vote to the server)
+            setTimeout(function() {
+                // You can either submit the form here or show a success message after some delay
+                // If you're submitting the form, you can use form.submit()
+
+                // For example, submitting the form after 2 seconds:
+                document.querySelector('form').submit();
+            }, 2000); // Adjust the timeout duration to simulate your backend processing time
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>

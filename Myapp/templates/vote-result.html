@@ -67,6 +67,15 @@
             color: #d9534f;
             margin-bottom: 20px;
         }
+
+        .marquee-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+ 
+
+
     </style>
 </head>
 <body>
@@ -77,6 +86,12 @@
             <div class="msg text-center alert alert-danger mt-4">{{ msg }}</div>
         {% endif %}
     
+        {% if not msg %}
+            <marquee width="100%" behavior="alternate" bgcolor="pink">  
+                <a href="{% url 'submit-vote' %}" class="btn btn-primary m-3">तुमचे मत नोंदवा</a>
+            </marquee>
+        {% endif %}
+
         <div class="mb-3">
             {% for candidate in candidates %}
             <div class="candidate-card">
@@ -101,9 +116,14 @@
             <p>Total Votes: {{ total_votes }}</p>
         </div>
         <hr class="mt-3 mb-3">
+        {% if not msg %}
+        <marquee width="100%" behavior="alternate" bgcolor="pink">  
+            <a href="{% url 'submit-vote' %}" class="btn btn-primary m-3">तुमचे मत नोंदवा</a>
+        </marquee>
+        {% endif %}
     </div>
 
-    
+
     <div class="text-center mt-4">
         <button id="shareBtn" class="btn btn-success">Share on WhatsApp</button>
     </div>
