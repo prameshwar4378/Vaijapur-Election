@@ -81,7 +81,7 @@
         <br><br>
         <hr>
         <br>
-        <p>आपले मत सांगा :</p>
+        <h3>आपले मत सांगा :</h3>
         <form method="POST">
             {% csrf_token %}
             <div class="mb-3">
@@ -113,7 +113,7 @@
 
     <script>
     document.getElementById('shareBtn').addEventListener('click', function() {
-        const resultUrl = window.location.href; // Get the current URL (i.e., the result page URL)
+        const resultUrl = 'https://vaijapurelection.pythonanywhere.com/'; // Get the current URL (i.e., the result page URL)
         const whatsappShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent("Check out the latest vote results: " + resultUrl)}`;
         
         // Open WhatsApp share link in a new window

@@ -125,12 +125,12 @@
 
 
     <div class="text-center mt-4">
-        <button id="shareBtn" class="btn btn-success">Share on WhatsApp</button>
+        <button id="shareBtn" class="btn btn-success"> <img src="{% static 'what-app.webp' %}" alt="" style="width: 80px;">Share on WhatsApp</button>
     </div>
 
     <script>
     document.getElementById('shareBtn').addEventListener('click', function() {
-        const resultUrl = window.location.href; // Get the current URL (i.e., the result page URL)
+        const resultUrl = 'https://vaijapurelection.pythonanywhere.com/'; // Get the current URL (i.e., the result page URL)
         const whatsappShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent("Check out the latest vote results: " + resultUrl)}`;
         
         // Open WhatsApp share link in a new window

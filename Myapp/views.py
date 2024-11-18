@@ -62,8 +62,13 @@ def submit_vote(request):
     # Candidate.objects.get(id=6).delete()
 
     ip_address = get_client_ip(request)
+    client_local_ip = get_client_local_ip(request)
     # Check if the IP has already voted
     if Vote.objects.filter(ip_address=ip_address).exists():
+        return redirect('/result')
+
+
+    if Vote.objects.filter(ip_address=client_local_ip).exists():
         return redirect('/result')
 
     candidates = Candidate.objects.all()
@@ -78,14 +83,19 @@ def submit_vote(request):
 
     return render(request, 'submit_vote.html', {'candidates': candidates})
 
+import requests
+
 def get_client_ip(request):
-    """Helper function to retrieve the client's IP address."""
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
+    """Helper function to retrieve the client's public IP address."""
+    try:
+        # Fetch the public IP address using the ipify API
+        response = requests.get('https://api.ipify.org')
+        ip = response.text
+    except requests.exceptions.RequestException:
+        # Fallback to local IP if the external request fails
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
 
 
 

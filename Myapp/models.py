@@ -9,7 +9,7 @@ class Candidate(models.Model):
 
 class Vote(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name="votes")
-    ip_address = models.GenericIPAddressField()
+    ip_address = models.GenericIPAddressField(unique=True) 
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
